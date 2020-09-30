@@ -1,4 +1,4 @@
-<%@ page language=“java” %>
+<%@ page language="java" %>
 
 <html>
 	<body>
