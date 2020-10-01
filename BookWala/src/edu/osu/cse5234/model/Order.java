@@ -1,5 +1,15 @@
 package edu.osu.cse5234.model;
 
-public class Order {
+import java.util.List;
 
+public class Order {
+	List<Item> items;
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
 }
