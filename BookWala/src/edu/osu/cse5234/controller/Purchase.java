@@ -1,10 +1,9 @@
 package edu.osu.cse5234.controller;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -142,7 +141,7 @@ public class Purchase {
 			error += error.length() == 0 ? "Person Name" : ", Person Name";
 		}
 		
-		if (paymentInfo.expiryDate.isEmpty() || !isStringDate(paymentInfo.expiryDate)) {
+		if (paymentInfo.expiryDate.isEmpty() || !isExpiryDateValid(paymentInfo.expiryDate)) {
 			error += error.length() == 0 ? "Expiry Date": ", Expiry Date";
 		}
 		return error.length() == 0 ? error : error + " fields cannot be left empty/have invalid data. Please specify valid data.";
@@ -182,12 +181,16 @@ public class Purchase {
 		return true;
 	}
 	
-	private Boolean isStringDate(String str) {
+	private Boolean isExpiryDateValid(String str) {
 		try {
-			DateFormat format = new SimpleDateFormat();
-			format.parse(str);
-			return true;
-		} catch (ParseException e) {
+			DateTimeFormatter inputParser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate date = LocalDate.parse(str, inputParser);
+			if (date.isAfter(LocalDate.now())) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (DateTimeParseException e) {
 			return false;
 		}
 	}
