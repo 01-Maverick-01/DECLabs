@@ -1,6 +1,10 @@
 package edu.osu.cse5234.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -128,17 +132,17 @@ public class Purchase {
 	
 	private String validatePaymentInfo(PaymentInfo paymentInfo) {
 		String error = "";
-		if (paymentInfo.cardNumber.length() != 16 || isStringNumeric(paymentInfo.cardNumber)) {
+		if (paymentInfo.cardNumber.length() != 16 || !isStringNumeric(paymentInfo.cardNumber)) {
 			error += "Card Number";
 		}
-		if (paymentInfo.cvvCode.isEmpty()) {
+		if (paymentInfo.cvvCode.length() != 3 || !isStringNumeric(paymentInfo.cvvCode)) {
 			error += error.length() == 0 ? "CVV Code" : ", CVV Code";
 		}
 		if (paymentInfo.personName.isEmpty()) {
 			error += error.length() == 0 ? "Person Name" : ", Person Name";
 		}
 		
-		if (paymentInfo.expiryDate.isEmpty()) {
+		if (paymentInfo.expiryDate.isEmpty() || !isStringDate(paymentInfo.expiryDate)) {
 			error += error.length() == 0 ? "Expiry Date": ", Expiry Date";
 		}
 		return error.length() == 0 ? error : error + " fields cannot be left empty/have invalid data. Please specify valid data.";
@@ -156,7 +160,7 @@ public class Purchase {
 			error += error.length() == 0 ? "State" : ", State";
 		}
 		
-		if (shippingInfo.zipCode.length() !=5 || isStringNumeric(shippingInfo.zipCode)) {
+		if (shippingInfo.zipCode.length() !=5 || !isStringNumeric(shippingInfo.zipCode)) {
 			error += error.length() == 0 ? "Zip Code": ", Zip Code";
 		}
 		return error.length() == 0 ? error : error + " fields cannot be left empty/have invalid data. Please specify valid data.";
@@ -169,12 +173,22 @@ public class Purchase {
 		}
 	}
 	
-	private Boolean isStringNumeric(String string) {
-		for (int i = 0; i < string.length(); i++) {
-			if (string.charAt(i) < '0' || string.charAt(i) > '9') {
+	private Boolean isStringNumeric(String str) {
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) < '0' || str.charAt(i) > '9') {
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	private Boolean isStringDate(String str) {
+		try {
+			DateFormat format = new SimpleDateFormat();
+			format.parse(str);
+			return true;
+		} catch (ParseException e) {
+			return false;
+		}
 	}
 }
