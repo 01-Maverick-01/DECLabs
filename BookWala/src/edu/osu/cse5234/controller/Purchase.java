@@ -33,7 +33,7 @@ public class Purchase {
 		List<Item> selectedItems = new ArrayList<>();
 		for (Item item : order.getItems()) {
 			System.out.print(item.getQuantity());
-			if (!item.getQuantity().isEmpty()) {
+			if (!item.getQuantity().isEmpty() && isStringNumeric(item.getQuantity())) {
 				selectedItems.add(item);
 			}
 		}
@@ -45,7 +45,7 @@ public class Purchase {
 			request.getSession().removeAttribute("errors");
 			return "redirect:/purchase/paymentEntry";
 		} else {
-			request.getSession().setAttribute("errors", "No item was selected. Please select items you want to purchase.");
+			request.getSession().setAttribute("errors", "No item was selected/invalid quantity specified. Please select items you want to purchase.");
 			return "redirect:/purchase";
 		}
 	}
@@ -128,7 +128,7 @@ public class Purchase {
 	
 	private String validatePaymentInfo(PaymentInfo paymentInfo) {
 		String error = "";
-		if (paymentInfo.cardNumber.isEmpty()) {
+		if (paymentInfo.cardNumber.length() != 16 || isStringNumeric(paymentInfo.cardNumber)) {
 			error += "Card Number";
 		}
 		if (paymentInfo.cvvCode.isEmpty()) {
@@ -141,7 +141,7 @@ public class Purchase {
 		if (paymentInfo.expiryDate.isEmpty()) {
 			error += error.length() == 0 ? "Expiry Date": ", Expiry Date";
 		}
-		return error.length() == 0 ? error : error + " fields cannot be left empty. Please specify valid data.";
+		return error.length() == 0 ? error : error + " fields cannot be left empty/have invalid data. Please specify valid data.";
 	}
 	
 	private String validateShippingInfo(ShippingInfo shippingInfo) {
@@ -156,10 +156,10 @@ public class Purchase {
 			error += error.length() == 0 ? "State" : ", State";
 		}
 		
-		if (shippingInfo.zipCode.isEmpty()) {
+		if (shippingInfo.zipCode.length() !=5 || isStringNumeric(shippingInfo.zipCode)) {
 			error += error.length() == 0 ? "Zip Code": ", Zip Code";
 		}
-		return error.length() == 0 ? error : error + " fields cannot be left empty. Please specify valid data.";
+		return error.length() == 0 ? error : error + " fields cannot be left empty/have invalid data. Please specify valid data.";
 	}
 	
 	private void handleErrors(HttpServletRequest request) {
@@ -167,5 +167,14 @@ public class Purchase {
 			request.setAttribute("errors", request.getSession().getAttribute("errors"));
 			request.getSession().removeAttribute("errors");
 		}
+	}
+	
+	private Boolean isStringNumeric(String string) {
+		for (int i = 0; i < string.length(); i++) {
+			if (string.charAt(i) < '0' || string.charAt(i) > '9') {
+				return false;
+			}
+		}
+		return true;
 	}
 }
