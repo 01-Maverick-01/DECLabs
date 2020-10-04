@@ -35,7 +35,6 @@ public class Purchase {
 	public String submitItems(@ModelAttribute("order") Order order, HttpServletRequest request) {
 		List<Item> selectedItems = new ArrayList<>();
 		for (Item item : order.getItems()) {
-			System.out.print(item.getQuantity());
 			if (!item.getQuantity().isEmpty() && isStringNumeric(item.getQuantity())) {
 				selectedItems.add(item);
 			}
