@@ -9,7 +9,10 @@
 			  integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" 
 			  crossorigin="anonymous">
 	</head>
-	<body>
+	<body style="background-color: #f0f0f0;">
+		<nav class="navbar navbar-dark bg-dark">
+  			<a class="navbar-brand" href="/BookWala/purchase"><h2>BookWala</h2></a>
+		</nav>
 		<div class="container-fluid">
 			<div class="row justify-content-md-center">
 			    <div class="col-md-8">

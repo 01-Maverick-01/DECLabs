@@ -2,6 +2,7 @@ package edu.osu.cse5234.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +22,6 @@ public class Purchase {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String viewOrderEntryForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// ... instantiate and set order object with items to display
 		request.setAttribute("order", instantiateStore());
 		return "OrderEntryForm";
 	}
@@ -62,6 +62,17 @@ public class Purchase {
 		request.setAttribute("payment", request.getSession().getAttribute("payment"));
 		request.setAttribute("shipping", request.getSession().getAttribute("shipping"));
 		return "ViewOrder";
+	}
+	
+	@RequestMapping(path = "/confirmOrder", method = RequestMethod.POST)
+	public String confirmOrder(HttpServletRequest request) {
+		return "redirect:/purchase/viewConfirmation";
+	}
+	
+	@RequestMapping(path = "/viewConfirmation", method = RequestMethod.GET)
+	public String viewConfirmation(HttpServletRequest request, HttpServletResponse response) {
+		request.setAttribute("orderId", ThreadLocalRandom.current().nextInt());
+		return "Confirmation";
 	}
 	
 	
