@@ -40,6 +40,10 @@
 								   			</tr>
 								   		</c:forEach>
 								   	</table>
+								   	<span class="float-right">
+								   		<b>Total: </b>
+								   		<c:out value="$${total}"></c:out>
+								   	</span>
 							  	</div>
 							</div>
 						</div>

@@ -98,6 +98,7 @@ public class Purchase {
 		request.setAttribute("order", request.getSession().getAttribute("order"));
 		request.setAttribute("payment", request.getSession().getAttribute("payment"));
 		request.setAttribute("shipping", request.getSession().getAttribute("shipping"));
+		request.setAttribute("total", getTotalAmount((Order) request.getAttribute("order")));
 		return "ViewOrder";
 	}
 	
@@ -193,5 +194,14 @@ public class Purchase {
 		} catch (DateTimeParseException e) {
 			return false;
 		}
+	}
+	
+	private double getTotalAmount(Order placedOrder) {
+		double total = 0;
+		for (Item item : placedOrder.getItems()) {
+			total += (Double.parseDouble(item.price) * Integer.parseInt(item.quantity));
+		}
+		
+		return total;
 	}
 }
