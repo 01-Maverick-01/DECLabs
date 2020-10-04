@@ -23,37 +23,71 @@ public class Purchase {
 	@RequestMapping(method = RequestMethod.GET)
 	public String viewOrderEntryForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setAttribute("order", instantiateStore());
+		handleErrors(request);
+		
 		return "OrderEntryForm";
 	}
 	
 	@RequestMapping(path = "/submitItems", method = RequestMethod.POST)
 	public String submitItems(@ModelAttribute("order") Order order, HttpServletRequest request) {
-		request.getSession().setAttribute("order", order);
-		return "redirect:/purchase/paymentEntry";
+		List<Item> selectedItems = new ArrayList<>();
+		for (Item item : order.getItems()) {
+			System.out.print(item.getQuantity());
+			if (!item.getQuantity().isEmpty()) {
+				selectedItems.add(item);
+			}
+		}
+		Order selectedOrder = new Order();
+		selectedOrder.setItems(selectedItems);
+		
+		if (selectedItems.size() > 0) {
+			request.getSession().setAttribute("order", selectedOrder);
+			request.getSession().removeAttribute("errors");
+			return "redirect:/purchase/paymentEntry";
+		} else {
+			request.getSession().setAttribute("errors", "No item was selected. Please select items you want to purchase.");
+			return "redirect:/purchase";
+		}
 	}
 	
 	@RequestMapping(path = "/paymentEntry", method = RequestMethod.GET)
 	public String viewPaymentEntryForm(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("payment", new PaymentInfo());
+		handleErrors(request);
+		
 		return "PaymentEntryForm";
 	}
 	
 	@RequestMapping(path = "/submitPayment", method = RequestMethod.POST)
 	public String submitPayment(@ModelAttribute("payment") PaymentInfo paymentInfo, HttpServletRequest request) {
-		request.getSession().setAttribute("payment", paymentInfo);
-		return "redirect:/purchase/shippingEntry";
+		String error = validatePaymentInfo(paymentInfo);
+		if (error.length() == 0) {
+			request.getSession().setAttribute("payment", paymentInfo);
+			return "redirect:/purchase/shippingEntry";
+		} else {
+			request.getSession().setAttribute("errors", error);
+			return "redirect:/purchase/paymentEntry";
+		}
 	}
 	
 	@RequestMapping(path = "/shippingEntry", method = RequestMethod.GET)
 	public String viewShippingEntryForm(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("shipping", new ShippingInfo());
+		handleErrors(request);
+		
 		return "ShippingEntryForm";
 	}
 	
 	@RequestMapping(path = "/submitShipping", method = RequestMethod.POST)
 	public String submitShipping(@ModelAttribute("shipping") ShippingInfo shippingInfo, HttpServletRequest request) {
-		request.getSession().setAttribute("shipping", shippingInfo);
-		return "redirect:/purchase/viewOrder";
+		String error = validateShippingInfo(shippingInfo);
+		if (error.length() == 0) {
+			request.getSession().setAttribute("shipping", shippingInfo);
+			return "redirect:/purchase/viewOrder";
+		} else {
+			request.getSession().setAttribute("errors", error);
+			return "redirect:/purchase/shippingEntry";
+		}
 	}
 	
 	@RequestMapping(path = "/viewOrder", method = RequestMethod.GET)
@@ -76,8 +110,7 @@ public class Purchase {
 	}
 	
 	
-	private Order instantiateStore() {
-		
+	private Order instantiateStore() {	
 		Order order = new Order();
 		
 		List<Item> items = new ArrayList<>();
@@ -91,5 +124,48 @@ public class Purchase {
 		
 		order.setItems(items);
 		return order;
+	}
+	
+	private String validatePaymentInfo(PaymentInfo paymentInfo) {
+		String error = "";
+		if (paymentInfo.cardNumber.isEmpty()) {
+			error += "Card Number";
+		}
+		if (paymentInfo.cvvCode.isEmpty()) {
+			error += error.length() == 0 ? "CVV Code" : ", CVV Code";
+		}
+		if (paymentInfo.personName.isEmpty()) {
+			error += error.length() == 0 ? "Person Name" : ", Person Name";
+		}
+		
+		if (paymentInfo.expiryDate.isEmpty()) {
+			error += error.length() == 0 ? "Expiry Date": ", Expiry Date";
+		}
+		return error.length() == 0 ? error : error + " fields cannot be left empty. Please specify valid data.";
+	}
+	
+	private String validateShippingInfo(ShippingInfo shippingInfo) {
+		String error = "";
+		if (shippingInfo.addressLine1.isEmpty()) {
+			error += "Address";
+		}
+		if (shippingInfo.city.isEmpty()) {
+			error += error.length() == 0 ? "City" : ", City";
+		}
+		if (shippingInfo.state.isEmpty()) {
+			error += error.length() == 0 ? "State" : ", State";
+		}
+		
+		if (shippingInfo.zipCode.isEmpty()) {
+			error += error.length() == 0 ? "Zip Code": ", Zip Code";
+		}
+		return error.length() == 0 ? error : error + " fields cannot be left empty. Please specify valid data.";
+	}
+	
+	private void handleErrors(HttpServletRequest request) {
+		if (request.getSession().getAttribute("errors") != null) {
+			request.setAttribute("errors", request.getSession().getAttribute("errors"));
+			request.getSession().removeAttribute("errors");
+		}
 	}
 }

@@ -17,6 +17,14 @@
 			<div class="row justify-content-md-center">
 			    <div class="col-md-8">
 			    	<br/>
+			    	<c:if test="${errors != null}">
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<c:out value="${errors}"></c:out>
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					</c:if>
 			    	<div class="card border-primary mb-3">
 			    		<div class="card-header">
 							<h3>Select Items</h3>
@@ -35,6 +43,8 @@
 							   			<tr>
 							   				<td><c:out value="${item.name}"></c:out></td>
 							   				<td><c:out value="$${item.price}"></c:out></td>
+							   				<form:hidden path="items[${loop.index}].name" value="${item.name}"/>
+							   				<form:hidden path="items[${loop.index}].price" value="${item.price}"/>
 							   				<td><form:input class="form-control" path="items[${loop.index}].quantity" /></td>
 							   			</tr>
 							   		</c:forEach>
