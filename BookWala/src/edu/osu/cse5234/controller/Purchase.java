@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.osu.cse5234.model.Item;
 import edu.osu.cse5234.model.Order;
@@ -26,15 +27,37 @@ public class Purchase {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String viewOrderEntryForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
 		Order order = new Order();
-		order.setItems(new ArrayList<Item>(inventory.getItems()));
-		for (Item item : order.getItems()) {
-			item.setQuantity("");
+		List<Item> items = new ArrayList<>();
+		for (Item item : inventory.getItems()) {
+			Item newItem = new Item();
+			newItem.setName(item.getName());
+			newItem.setPrice(item.getPrice());
+			items.add(newItem);
 		}
-		request.setAttribute("order", inventory);
+		
+		order.setItems(items);
+		request.setAttribute("order", order);
 		handleErrors(request);
 		
 		return "OrderEntryForm";
+	}
+	
+	@RequestMapping(path = "/checkInventory", method = RequestMethod.GET)
+	@ResponseBody
+	public String checkQuantity(HttpServletRequest request, HttpServletResponse response) {
+		String name = request.getParameter("name");
+		String quantity = request.getParameter("quantity");
+		for(Item item : inventory.getItems()) {
+			if (item.getName().equalsIgnoreCase(name)) {
+				if (Integer.parseInt(item.getQuantity()) - Integer.parseInt(quantity) >= 0)
+					return Boolean.TRUE.toString();
+				else
+					return Boolean.FALSE.toString();
+			}
+		}
+		return Boolean.FALSE.toString();
 	}
 	
 	@RequestMapping(path = "/submitItems", method = RequestMethod.POST)

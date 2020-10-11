@@ -8,9 +8,25 @@
 		<script>
 			$(document).ready(function(){
 				$(".form-control").change(function(){
-					var quantity = parseInt($(this).val());
-					if (quantity >= 0)
-						$(this).removeClass("is-invalid");
+					var input = $(this)
+					var quantity = parseInt(input.val());
+					if (quantity >= 0) {
+						var bookName = $(this).attr("data-book-name");
+						var dataString = "name="+ bookName +"&quantity="+quantity;
+						$.ajax ({
+							type: "GET",
+						  	url: "/BookWala/purchase/checkInventory",
+						  	data: dataString,
+						  	success: function(data, status){
+						  		if (data == "true")
+						  			input.removeClass("is-invalid");
+						  		else {
+						  			input.addClass("is-invalid");
+						  			alert("Error: Not enough items present in inventory");
+						  		}
+						  	}
+						});	
+					}
 					else
 						$(this).addClass("is-invalid");
 			  	});
@@ -57,7 +73,7 @@
 								   				<td><c:out value="$${item.price}"></c:out></td>
 								   				<form:hidden path="items[${loop.index}].name" value="${item.name}"/>
 								   				<form:hidden path="items[${loop.index}].price" value="${item.price}"/>
-								   				<td><form:input class="form-control" path="items[${loop.index}].quantity" /></td>
+								   				<td><form:input data-book-name="${item.name}" class="form-control" path="items[${loop.index}].quantity" /></td>
 								   			</tr>
 								   		</c:forEach>
 								   	</table>
