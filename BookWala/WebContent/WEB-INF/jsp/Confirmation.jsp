@@ -12,7 +12,7 @@
 	</jsp:attribute>
 	<jsp:body>
 		<main role="main">
-			<div class="container-fluid">
+			<div class="container-fluid" style="min-height:87%">
 				<div class="row justify-content-md-center">
 					<div class="col-md-8">
 						<br/>
