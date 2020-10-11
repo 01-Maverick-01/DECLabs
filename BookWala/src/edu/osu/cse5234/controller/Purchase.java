@@ -1,6 +1,6 @@
 package edu.osu.cse5234.controller;
 
-import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -223,9 +223,11 @@ public class Purchase {
 	
 	private Boolean isExpiryDateValid(String str) {
 		try {
-			DateTimeFormatter inputParser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			LocalDate date = LocalDate.parse(str, inputParser);
-			if (date.isAfter(LocalDate.now())) {
+			DateTimeFormatter inputParser = DateTimeFormatter.ofPattern("MM/yyyy");
+			YearMonth expiry = YearMonth.parse(str, inputParser);
+			YearMonth now = YearMonth.now();
+			if (expiry.isAfter(now) || (expiry.getMonthValue() == now.getMonthValue() &&
+										expiry.getYear() == now.getYear())) {
 				return true;
 			} else {
 				return false;

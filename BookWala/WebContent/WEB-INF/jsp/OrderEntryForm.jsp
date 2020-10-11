@@ -4,6 +4,19 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <t:generic>
+	<jsp:attribute name="script">
+		<script>
+			$(document).ready(function(){
+				$(".form-control").change(function(){
+					var quantity = parseInt($(this).val());
+					if (quantity >= 0)
+						$(this).removeClass("is-invalid");
+					else
+						$(this).addClass("is-invalid");
+			  	});
+			});
+		</script> 
+	</jsp:attribute>
 	<jsp:attribute name="header">
 		<jsp:include page="Header.jsp" /> 
 	</jsp:attribute>
