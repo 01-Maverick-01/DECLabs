@@ -36,22 +36,58 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			
-			<div class="album py-5 bg-light">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-4">
-							<div class="card mb-4 shadow-sm">
-							<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22348%22%20height%3D%22226%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20348%20226%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_175052a6993%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_175052a6993%22%3E%3Crect%20width%3D%22348%22%20height%3D%22226%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22116.7109375%22%20y%3D%22120.6875%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">
-							<div class="card-body">
-								<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-								<div class="d-flex justify-content-between align-items-center">
-									<div class="btn-group">
-										<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-										<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+				<div class="row justify-content-md-center">
+					<div class="col-md-12">
+						<div class="album py-3">
+							<div class="row">
+							    <div class="col-lg-11">
+							        <h3 class="one">Fresh Arrivals</h3>
+							    </div>
+							    <a href="/BookWala/purchase" class="btn btn-primary active float-right" role="button" aria-pressed="true">View All</a>
+							</div>
+							<hr/>
+							<div class="container">
+								<div class="row">
+									<div class="col-md-3">
+										<div class="card mb-4 shadow-sm">
+											<img class="card-img-top" style="height: 180px; display: block;" src="/BookWala/images/book1.jpg" data-holder-rendered="true">
+											<div class="card-body">
+												<p class="font-weight-bold mb-0">A Promised Land</p>
+												<p class="font-weight-light">By Barack Obama</p>
+												<p class="text-muted">$10.99</p>
+											</div>
+										</div>
 									</div>
-									<small class="text-muted">9 mins</small>
+									<div class="col-md-3">
+										<div class="card mb-4 shadow-sm">
+											<img class="card-img-top" style="height: 180px; display: block;" src="/BookWala/images/book2.jpg" data-holder-rendered="true">
+											<div class="card-body">
+												<p class="font-weight-bold mb-0">The Guardians</p>
+												<p class="font-weight-light">By John Grisham</p>
+												<p class="text-muted">$12.99</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="card mb-4 shadow-sm">
+											<img class="card-img-top" style="height: 180px; display: block;" src="/BookWala/images/book3.jpg" data-holder-rendered="true">
+											<div class="card-body">
+												<p class="font-weight-bold mb-0">The Fall of Gondolin</p>
+												<p class="font-weight-light">By J.R.R. Toliken</p>
+												<p class="text-muted">$14.99</p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="card mb-4 shadow-sm">
+											<img class="card-img-top" style="height: 180px; display: block;" src="/BookWala/images/book4.jpg" data-holder-rendered="true">
+											<div class="card-body">
+												<p class="font-weight-bold mb-0">The Chamber of Secrets</p>
+												<p class="font-weight-light">By J.K. Rowling</p>
+												<p class="text-muted">$7.99</p>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -59,5 +95,6 @@
 				</div>
 			</div>
 		</main>
+		<br/>
 	</jsp:body>
 </t:generic>
