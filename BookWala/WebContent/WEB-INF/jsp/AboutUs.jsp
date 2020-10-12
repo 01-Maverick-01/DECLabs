@@ -14,32 +14,33 @@
 	</jsp:attribute>
 	<jsp:body>
 		<main role="main">
-			<div class="container-fluid">
-				<div class="row justify-content-md-center">
-				    <div class="col-md-8">
-				    	<br/>
-				    	<c:if test="${errors != null}">
-							<div class="alert alert-danger alert-dismissible fade show" role="alert">
-								<c:out value="${errors}"></c:out>
-								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-						</c:if>
-				    	<div class="card border-primary mb-3">
-				    		<div class="card-header">
-								<h3>About Us</h3>
-							</div>
-							<div class="card-body">
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-						  	</div>
-						</div>
-				    </div>
+			<div class="bg-secondary text-center py-4 mb-5">
+				<div class="container">
+					<h1 class="font-weight-bold text-white">Meet the Team</h1>
 				</div>
 			</div>
+			<div class="container">
+				<div class="row  justify-content-md-center">
+			    	<div class="col-md-4 mb-5">
+			      		<div class="card border-0 shadow">
+			        		<img src="/BookWala/images/dp1.jpg" class="card-img-top" alt="...">
+			        		<div class="card-body text-center">
+			          			<h5 class="card-title mb-0">Team Member</h5>
+			          			<div class="card-text text-black-50">Masters Student (CSE)</div>
+			        		</div>
+			      		</div>
+			    	</div>
+			    	<div class="col-md-4 mb-4">
+			      		<div class="card border-0 shadow">
+			        		<img src="/BookWala/images/dp2.jpg" class="card-img-top" alt="...">
+			        		<div class="card-body text-center">
+			          			<h5 class="card-title mb-0">Team Member</h5>
+			          			<div class="card-text text-black-50">Masters Student (CSE)</div>
+			        		</div>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
 		</main>
-		<br/>
-		<br/>
-		<br/>
 	</jsp:body>
 </t:generic>

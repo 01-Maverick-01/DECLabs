@@ -26,13 +26,47 @@
 								</button>
 							</div>
 						</c:if>
-				    	<div class="card border-primary mb-3">
-				    		<div class="card-header">
-								<h3>Contact Us</h3>
+						<div class="row">
+							<br/>
+							<div class="col-md-6">
+								<div class="card border-primary mb-3">
+						    		<div style="width: 100%">
+										<embed width="100%" height="548" 
+												src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=2015%20Neil%20Avenue+(BookWala)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+										</embed>
+									</div>
+								</div>
 							</div>
-							<div class="card-body">
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-						  	</div>
+							<div class="col-md-6">
+						    	<div class="card border-primary mb-3">
+						    		<div class="card-header">
+										<h3>Contact Us</h3>
+									</div>
+									<div class="card-body">
+										<form:form modelAttribute="contactInfo" method="post" action="submitContactForm">
+											<table class="table table-borderless">
+										   		<tr>
+										   			<th>Name:</th>
+										 			<td><form:input id="cardNumber" class="form-control form-control-sm" path="name" /></td>
+										 		</tr>
+										 		<tr>
+										   			<th>Phone:</th>
+										 			<td><form:input class="form-control form-control-sm" path="phone" /></td>
+										 		</tr>
+										 		<tr>
+										   			<th>Email:</th>
+										 			<td><form:input id="cvvCode" class="form-control form-control-sm" path="email"/></td>
+										 		</tr>
+										 		<tr>
+										   			<th>Message:</th>
+										 			<td><form:textarea id="expiry" class="form-control form-control-sm" path="message" style="min-height:180px;"/></td>
+										 		</tr>
+										   	</table>
+										   	<button type="submit" class="btn btn-primary" value="Payment">Send</button>
+										</form:form>
+								  	</div>
+								</div>
+							</div>
 						</div>
 				    </div>
 				</div>
