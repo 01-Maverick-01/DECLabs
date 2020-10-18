@@ -16,7 +16,8 @@ import javax.ejb.Stateless;
 @Stateless
 @Remote(InventoryService.class)
 public class InventoryServiceBean implements InventoryService {
-
+	
+	private List<Item> itemsInInventory = instantiateStore();
     /**
      * Default constructor. 
      */
@@ -26,6 +27,39 @@ public class InventoryServiceBean implements InventoryService {
 
 	@Override
 	public Inventory getAvailableInventory() {
+		
+		Inventory inventory = new Inventory();
+		inventory.setItems(itemsInInventory);
+		
+		return inventory;
+	}
+
+	@Override
+	public boolean validateQuantity(List<Item> items) {
+		for (Item item : items) {
+			if (item.getQuantity().isEmpty() || !isStringNumeric(item.getQuantity()))
+				return false;
+			
+			for (Item storeItem : itemsInInventory) {
+				if (item.getName().equalsIgnoreCase(storeItem.getName())) {
+					int requiredCount = Integer.parseInt(item.getQuantity());
+					int availableCount = Integer.parseInt(storeItem.getQuantity());
+					if (availableCount < requiredCount)
+						return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+
+	@Override
+	public boolean updateInventory(List<Item> items) {
+		return true;
+	}
+	
+	private List<Item> instantiateStore() {
+		
 		List<Item> items = new ArrayList<>();
 		
 		Item item = new Item();
@@ -70,21 +104,16 @@ public class InventoryServiceBean implements InventoryService {
 		item.setQuantity("11");
 		items.add(item);
 		
-		Inventory inventory = new Inventory();
-		inventory.setItems(items);
-		
-		return inventory;
-	}
-
-	@Override
-	public boolean validateQuantity(List<Item> items) {
-		return true;
-	}
-
-	@Override
-	public boolean updateInventory(List<Item> items) {
-		return true;
+		return items;
 	}
 	
+	private Boolean isStringNumeric(String str) {
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) < '0' || str.charAt(i) > '9') {
+				return false;
+			}
+		}
+		return true;
+	}
 	
 }

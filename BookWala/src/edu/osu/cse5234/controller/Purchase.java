@@ -4,6 +4,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,12 +27,14 @@ import edu.osu.cse5234.util.ServiceLocator;
 @Controller
 @RequestMapping("/purchase")
 public class Purchase {
-	Order inventory = instantiateStore();
-
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String viewOrderEntryForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		Order order = new Order();
+		InventoryService inventoryService = ServiceLocator.getInventoryService();
+		Inventory inventory = inventoryService.getAvailableInventory();
+		
 		List<Item> items = new ArrayList<>();
 		for (Item item : inventory.getItems()) {
 			Item newItem = new Item();
@@ -50,17 +53,16 @@ public class Purchase {
 	@RequestMapping(path = "/checkInventory", method = RequestMethod.GET)
 	@ResponseBody
 	public String checkQuantity(HttpServletRequest request, HttpServletResponse response) {
-		String name = request.getParameter("name");
-		String quantity = request.getParameter("quantity");
-		for (Item item : inventory.getItems()) {
-			if (item.getName().equalsIgnoreCase(name)) {
-				if (Integer.parseInt(item.getQuantity()) - Integer.parseInt(quantity) >= 0)
-					return Boolean.TRUE.toString();
-				else
-					return Boolean.FALSE.toString();
-			}
+		Item item = new Item();
+		item.setName(request.getParameter("name"));
+		item.setQuantity(request.getParameter("quantity"));
+
+		InventoryService inventoryService = ServiceLocator.getInventoryService();
+		if (inventoryService.validateQuantity(Collections.singletonList(item))) {
+			return Boolean.TRUE.toString();
+		} else {
+			return Boolean.FALSE.toString();
 		}
-		return Boolean.FALSE.toString();
 	}
 
 	@RequestMapping(path = "/submitItems", method = RequestMethod.POST)
@@ -74,15 +76,6 @@ public class Purchase {
 		}
 		Order selectedOrder = new Order();
 		selectedOrder.setItems(selectedItems);
-		
-		/*
-		 * if (selectedItems.size() > 0) { request.getSession().setAttribute("order",
-		 * selectedOrder); request.getSession().removeAttribute("errors"); return
-		 * "redirect:/purchase/paymentEntry"; } else {
-		 * request.getSession().setAttribute("errors",
-		 * "No item was selected/invalid quantity specified. Please select items you want to purchase."
-		 * ); return "redirect:/purchase"; }
-		*/
 		
 		OrderProcessingServiceBean orderProcessingServiceBean = ServiceLocator.getOrderProcessingService();
 		if (orderProcessingServiceBean.validateItemAvailability(selectedOrder)) {
@@ -158,44 +151,6 @@ public class Purchase {
 	public String viewConfirmation(HttpServletRequest request, HttpServletResponse response) {
 		/* request.setAttribute("orderId", ThreadLocalRandom.current().nextInt()); */
 		return "Confirmation";
-	}
-
-	private Order instantiateStore() {
-		Order order = new Order();
-
-		/*
-		 * List<Item> items = new ArrayList<>();
-		 * 
-		 * Item item = new Item(); item.setName("A Promised Land");
-		 * item.setPrice("10.99"); item.setQuantity("5"); items.add(item);
-		 * 
-		 * item = new Item(); item.setName("The Guardians"); item.setPrice("12.99");
-		 * item.setQuantity("6"); items.add(item);
-		 * 
-		 * item = new Item(); item.setName("The fall of Gandolin");
-		 * item.setPrice("14.99"); item.setQuantity("7"); items.add(item);
-		 * 
-		 * item = new Item(); item.setName("The Chambers of Sceret");
-		 * item.setPrice("7.99"); item.setQuantity("8"); items.add(item);
-		 * 
-		 * item = new Item(); item.setName("Book-X"); item.setPrice("16.99");
-		 * item.setQuantity("9"); items.add(item);
-		 * 
-		 * item = new Item(); item.setName("Book-Y"); item.setQuantity("10");
-		 * item.setPrice("1.99"); items.add(item);
-		 * 
-		 * item = new Item(); item.setName("Book-Z"); item.setPrice("1.99");
-		 * item.setQuantity("11"); items.add(item);
-		 * 
-		 * order.setItems(items);
-		 */
-
-		InventoryService inventoryService = ServiceLocator.getInventoryService();
-		Inventory inventory = inventoryService.getAvailableInventory();
-
-		order.setItems(inventory.getItems());
-
-		return order;
 	}
 
 	private String validatePaymentInfo(PaymentInfo paymentInfo) {
