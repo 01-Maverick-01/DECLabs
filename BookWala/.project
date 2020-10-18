@@ -3,6 +3,7 @@
 	<name>BookWala</name>
 	<comment></comment>
 	<projects>
+		<project>BookWala-EJBClient</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
