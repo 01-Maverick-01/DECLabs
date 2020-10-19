@@ -33,5 +33,6 @@
     	<div id="pagefooter">
       		<jsp:invoke fragment="footer"/>
     	</div>
+    	<script type="text/javascript" src="/BookWala/js/vanilla-tilt.min.js"></script>
   	</body>
 </html>

@@ -49,7 +49,7 @@
 							<div class="container">
 								<div class="row">
 									<div class="col-md-3">
-										<div class="card mb-4 shadow-sm">
+										<div class="card mb-4 shadow-sm" data-tilt data-tilt-scale="1.1">
 											<img class="card-img-top" style="height: 180px; display: block;" src="/BookWala/images/book1.jpg" data-holder-rendered="true">
 											<div class="card-body">
 												<p class="font-weight-bold mb-0">A Promised Land</p>
@@ -59,7 +59,7 @@
 										</div>
 									</div>
 									<div class="col-md-3">
-										<div class="card mb-4 shadow-sm">
+										<div class="card mb-4 shadow-sm" data-tilt data-tilt-scale="1.1">
 											<img class="card-img-top" style="height: 180px; display: block;" src="/BookWala/images/book2.jpg" data-holder-rendered="true">
 											<div class="card-body">
 												<p class="font-weight-bold mb-0">The Guardians</p>
@@ -69,7 +69,7 @@
 										</div>
 									</div>
 									<div class="col-md-3">
-										<div class="card mb-4 shadow-sm">
+										<div class="card mb-4 shadow-sm" data-tilt data-tilt-scale="1.1">
 											<img class="card-img-top" style="height: 180px; display: block;" src="/BookWala/images/book3.jpg" data-holder-rendered="true">
 											<div class="card-body">
 												<p class="font-weight-bold mb-0">The Fall of Gondolin</p>
@@ -79,7 +79,7 @@
 										</div>
 									</div>
 									<div class="col-md-3">
-										<div class="card mb-4 shadow-sm">
+										<div class="card mb-4 shadow-sm" data-tilt data-tilt-scale="1.1">
 											<img class="card-img-top" style="height: 180px; display: block;" src="/BookWala/images/book4.jpg" data-holder-rendered="true">
 											<div class="card-body">
 												<p class="font-weight-bold mb-0">The Chamber of Secrets</p>
