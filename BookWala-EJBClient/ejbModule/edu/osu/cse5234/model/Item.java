@@ -1,4 +1,4 @@
-package edu.osu.cse5234;
+package edu.osu.cse5234.model;
 
 import java.io.Serializable;
 

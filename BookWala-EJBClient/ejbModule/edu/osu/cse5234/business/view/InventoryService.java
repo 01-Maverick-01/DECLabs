@@ -2,7 +2,7 @@ package edu.osu.cse5234.business.view;
 
 import java.util.List;
 
-import edu.osu.cse5234.Item;
+import edu.osu.cse5234.model.Item;
 
 public interface InventoryService {
 	
