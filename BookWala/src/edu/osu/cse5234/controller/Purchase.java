@@ -19,6 +19,7 @@ import edu.osu.cse5234.business.OrderProcessingServiceBean;
 import edu.osu.cse5234.business.view.Inventory;
 import edu.osu.cse5234.business.view.InventoryService;
 import edu.osu.cse5234.model.Item;
+import edu.osu.cse5234.model.LineItem;
 import edu.osu.cse5234.model.Order;
 import edu.osu.cse5234.model.PaymentInfo;
 import edu.osu.cse5234.model.ShippingInfo;
@@ -35,16 +36,14 @@ public class Purchase {
 		InventoryService inventoryService = ServiceLocator.getInventoryService();
 		Inventory inventory = inventoryService.getAvailableInventory();
 		
-		List<Item> items = new ArrayList<>();
-		for (Item item : inventory.getItems()) {
-			Item newItem = new Item();
-			newItem.setName(item.getName());
-			newItem.setPrice(item.getPrice());
-			items.add(newItem);
+		ArrayList<LineItem> items = new ArrayList<>();
+		for (@SuppressWarnings("unused") Item item : inventory.getItems()) {
+			items.add(new LineItem());
 		}
 
 		order.setItems(items);
 		request.setAttribute("order", order);
+		request.setAttribute("inventory", inventory);
 		handleErrors(request);
 
 		return "OrderEntryForm";
@@ -68,11 +67,11 @@ public class Purchase {
 	@RequestMapping(path = "/submitItems", method = RequestMethod.POST)
 	public String submitItems(@ModelAttribute("order") Order order, HttpServletRequest request) {
 		
-		List<Item> selectedItems = new ArrayList<>(); 
-		for (Item item : order.getItems()) {
-			if (!item.getQuantity().isEmpty() && isStringNumeric(item.getQuantity())) { 
+		List<LineItem> selectedItems = new ArrayList<>(); 
+		for (LineItem item : order.getItems()) {
+			if (item.getQuantity() > 0) { 
 				selectedItems.add(item); 
-			} 
+			}
 		}
 		Order selectedOrder = new Order();
 		selectedOrder.setItems(selectedItems);
@@ -140,9 +139,12 @@ public class Purchase {
 
 	@RequestMapping(path = "/confirmOrder", method = RequestMethod.POST)
 	public String confirmOrder(HttpServletRequest request) {
+		Order order = (Order) request.getSession().getAttribute("order");
+		order.setShippingInfo((ShippingInfo) request.getSession().getAttribute("shipping"));
+		order.setPaymentInfo((PaymentInfo) request.getSession().getAttribute("payment"));
 		OrderProcessingServiceBean orderProcessingServiceBean = ServiceLocator.getOrderProcessingService();
 		String confirmationCode = orderProcessingServiceBean
-				.processOrder((Order) request.getSession().getAttribute("order"));
+				.processOrder(order);
 		request.getSession().setAttribute("orderId", confirmationCode);
 		return "redirect:/purchase/viewConfirmation";
 	}
@@ -155,17 +157,17 @@ public class Purchase {
 
 	private String validatePaymentInfo(PaymentInfo paymentInfo) {
 		String error = "";
-		if (paymentInfo.cardNumber.length() != 16 || !isStringNumeric(paymentInfo.cardNumber)) {
+		if (paymentInfo.getCardNumber().length() != 16 || !isStringNumeric(paymentInfo.getCardNumber())) {
 			error += "Card Number";
 		}
-		if (paymentInfo.cvvCode.length() != 3 || !isStringNumeric(paymentInfo.cvvCode)) {
+		if (paymentInfo.getCvvCode().length() != 3 || !isStringNumeric(paymentInfo.getCvvCode())) {
 			error += error.length() == 0 ? "CVV Code" : ", CVV Code";
 		}
-		if (paymentInfo.personName.isEmpty()) {
+		if (paymentInfo.getPersonName().isEmpty()) {
 			error += error.length() == 0 ? "Person Name" : ", Person Name";
 		}
 
-		if (paymentInfo.expiryDate.isEmpty() || !isExpiryDateValid(paymentInfo.expiryDate)) {
+		if (paymentInfo.getExpiryDate().isEmpty() || !isExpiryDateValid(paymentInfo.getExpiryDate())) {
 			error += error.length() == 0 ? "Expiry Date" : ", Expiry Date";
 		}
 		return error.length() == 0 ? error
@@ -174,17 +176,17 @@ public class Purchase {
 
 	private String validateShippingInfo(ShippingInfo shippingInfo) {
 		String error = "";
-		if (shippingInfo.addressLine1.isEmpty()) {
+		if (shippingInfo.getAddressLine1().isEmpty()) {
 			error += "Address";
 		}
-		if (shippingInfo.city.isEmpty()) {
+		if (shippingInfo.getCity().isEmpty()) {
 			error += error.length() == 0 ? "City" : ", City";
 		}
-		if (shippingInfo.state.isEmpty()) {
+		if (shippingInfo.getState().isEmpty()) {
 			error += error.length() == 0 ? "State" : ", State";
 		}
 
-		if (shippingInfo.zipCode.length() != 5 || !isStringNumeric(shippingInfo.zipCode)) {
+		if (shippingInfo.getZipCode().length() != 5 || !isStringNumeric(shippingInfo.getZipCode())) {
 			error += error.length() == 0 ? "Zip Code" : ", Zip Code";
 		}
 		return error.length() == 0 ? error
@@ -225,8 +227,8 @@ public class Purchase {
 
 	private double getTotalAmount(Order placedOrder) {
 		double total = 0;
-		for (Item item : placedOrder.getItems()) {
-			total += (Double.parseDouble(item.price) * Integer.parseInt(item.quantity));
+		for (LineItem item : placedOrder.getItems()) {
+			total += (item.getPrice() * item.getQuantity());
 		}
 
 		return total;

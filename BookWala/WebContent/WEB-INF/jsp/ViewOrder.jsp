@@ -83,6 +83,14 @@
 									<div class="card-body">
 										<table class="table table-borderless">
 									   		<tr>
+									   			<th>Name:</th>
+									   			<td><c:out value="${shipping.name}"></c:out></td>
+									 		</tr>
+									 		<tr>
+									   			<th>Email:</th>
+									   			<td><c:out value="${shipping.email}"></c:out></td>
+									 		</tr>
+									   		<tr>
 									   			<th>Address Line 1:</th>
 									   			<td><c:out value="${shipping.addressLine1}"></c:out></td>
 									 		</tr>
@@ -97,6 +105,10 @@
 									 		<tr>
 									   			<th>State:</th>
 									   			<td><c:out value="${shipping.state}"></c:out></td>
+									 		</tr>
+									 		<tr>
+									   			<th>Country:</th>
+									   			<td><c:out value="${shipping.country}"></c:out></td>
 									 		</tr>
 									 		<tr>
 									   			<th>Zip Code:</th>

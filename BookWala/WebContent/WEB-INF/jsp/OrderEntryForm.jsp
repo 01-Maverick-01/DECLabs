@@ -67,12 +67,13 @@
 										      	<th scope="col">Quantity</th>
 										    </tr>
 										</thead>
-								   		<c:forEach items="${order.items}" var="item" varStatus="loop">
+								   		<c:forEach items="${inventory.items}" var="item" varStatus="loop">
 								   			<tr>
 								   				<td><c:out value="${item.name}"></c:out></td>
 								   				<td><c:out value="$${item.price}"></c:out></td>
 								   				<form:hidden path="items[${loop.index}].name" value="${item.name}"/>
 								   				<form:hidden path="items[${loop.index}].price" value="${item.price}"/>
+								   				<form:hidden path="items[${loop.index}].itemNumber" value="${item.itemNumber}"/>
 								   				<td><form:input data-book-name="${item.name}" class="form-control" path="items[${loop.index}].quantity" /></td>
 								   			</tr>
 								   		</c:forEach>

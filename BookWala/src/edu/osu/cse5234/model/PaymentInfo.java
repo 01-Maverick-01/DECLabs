@@ -1,12 +1,40 @@
 package edu.osu.cse5234.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="PAYMENT_INFO")
 public class PaymentInfo {
 	
-	public String cardNumber;
-	public String cvvCode;
-	public String expiryDate;
-	public String personName;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ID")
+	int id;
 	
+	@Column(name="CARD_NUM")
+	private String cardNumber;
+	
+	@Column(name="CVV")
+	private String cvvCode;
+	
+	@Column(name="EXP_DATE")
+	private String expiryDate;
+	
+	@Column(name="HOLDER_NAME")
+	private String personName;
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getCardNumber() {
 		return cardNumber;
 	}

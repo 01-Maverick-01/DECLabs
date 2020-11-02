@@ -48,6 +48,14 @@
 								<form:form modelAttribute="shipping" method="post" action="submitShipping">
 									<table class="table table-borderless">
 								   		<tr>
+								   			<th>Name:</th>
+								 			<td><form:input id="name" class="form-control form-control-sm" path="name" /></td>
+								 		</tr>
+								 		<tr>
+								   			<th>Email:</th>
+								 			<td><form:input id="email" class="form-control form-control-sm" path="email" /></td>
+								 		</tr>
+								   		<tr>
 								   			<th>Address Line 1:</th>
 								 			<td><form:input id="ad1" class="form-control form-control-sm" path="addressLine1" /></td>
 								 		</tr>
@@ -62,6 +70,10 @@
 								 		<tr>
 								   			<th>State:</th>
 								 			<td><form:input id="state" class="form-control form-control-sm" path="state" /></td>
+								 		</tr>
+								 		<tr>
+								   			<th>Country:</th>
+								 			<td><form:input id="country" class="form-control form-control-sm" path="country" /></td>
 								 		</tr>
 								 		<tr>
 								   			<th>Zip Code:</th>

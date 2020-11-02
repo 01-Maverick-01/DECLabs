@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * Session Bean implementation class InventoryServiceBean
@@ -17,7 +19,11 @@ import javax.ejb.Stateless;
 @Remote(InventoryService.class)
 public class InventoryServiceBean implements InventoryService {
 	
-	private List<Item> itemsInInventory = instantiateStore();
+	private String MY_QUERY = "Select i from Item i";
+	
+	@PersistenceContext
+	private EntityManager entityManager;
+	
     /**
      * Default constructor. 
      */
@@ -28,8 +34,10 @@ public class InventoryServiceBean implements InventoryService {
 	@Override
 	public Inventory getAvailableInventory() {
 		
+		entityManager.createQuery(MY_QUERY, Item.class).getResultList();
+		
 		Inventory inventory = new Inventory();
-		inventory.setItems(itemsInInventory);
+		inventory.setItems(getInventoryItems());
 		
 		return inventory;
 	}
@@ -40,7 +48,7 @@ public class InventoryServiceBean implements InventoryService {
 			if (item.getQuantity().isEmpty() || !isStringNumeric(item.getQuantity()))
 				return false;
 			
-			for (Item storeItem : itemsInInventory) {
+			for (Item storeItem : getInventoryItems()) {
 				if (item.getName().equalsIgnoreCase(storeItem.getName())) {
 					int requiredCount = Integer.parseInt(item.getQuantity());
 					int availableCount = Integer.parseInt(storeItem.getQuantity());
@@ -58,53 +66,8 @@ public class InventoryServiceBean implements InventoryService {
 		return true;
 	}
 	
-	private List<Item> instantiateStore() {
-		
-		List<Item> items = new ArrayList<>();
-		
-		Item item = new Item();
-		item.setName("A Promised Land");
-		item.setPrice("10.99");
-		item.setQuantity("5");
-		items.add(item);
-		
-		item = new Item();
-		item.setName("The Guardians");
-		item.setPrice("12.99");
-		item.setQuantity("6");
-		items.add(item);
-		
-		item = new Item();
-		item.setName("The fall of Gandolin");
-		item.setPrice("14.99");
-		item.setQuantity("7");
-		items.add(item);
-		
-		item = new Item();
-		item.setName("The Chambers of Sceret");
-		item.setPrice("7.99");
-		item.setQuantity("8");
-		items.add(item);
-		
-		item = new Item();
-		item.setName("Book-X");
-		item.setPrice("16.99");
-		item.setQuantity("9");
-		items.add(item);
-		
-		item = new Item();
-		item.setName("Book-Y");
-		item.setQuantity("10");
-		item.setPrice("1.99");
-		items.add(item);
-
-		item = new Item();
-		item.setName("Book-Z");
-		item.setPrice("1.99");
-		item.setQuantity("11");
-		items.add(item);
-		
-		return items;
+	private List<Item> getInventoryItems() {
+		return entityManager.createQuery(MY_QUERY, Item.class).getResultList();
 	}
 	
 	private Boolean isStringNumeric(String str) {
