@@ -4,7 +4,6 @@ import edu.osu.cse5234.business.view.Inventory;
 import edu.osu.cse5234.business.view.InventoryService;
 import edu.osu.cse5234.model.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Remote;
