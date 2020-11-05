@@ -43,6 +43,9 @@ public class OrderProcessingServiceBean {
     }
     
     public boolean validateItemAvailability(Order order) {
+    	
+    	if (order.getItems().size() == 0) return false;
+    	
     	InventoryService inventoryService = ServiceLocator.getInventoryService();
 		Inventory inventory = inventoryService.getAvailableInventory();
 		for(LineItem item : order.getItems()) {
